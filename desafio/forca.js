@@ -6,38 +6,32 @@ let vidasRestantes = 6;
 let palavraUsuario = [];
 let palavraEsperada = [];
 let letraExiste = '';
+let validarChuteRegExp = /([a-z])/;
 
 class Forca {
   
   constructor(palavraSecreta) {
     palavraEsperada = palavraSecreta.split("");
-    palavraUsuario = palavraEsperada.map((letra) => { return "_" });
+    palavraUsuario = palavraEsperada.map(() => { return "_" });
   }
   
   chutar(letraUsuario) {
-    
-    if (letraUsuario.length <= 1 && letraUsuario != '') {
+
+    if (validarChuteRegExp.test(letraUsuario) && letraUsuario.length <= 1) {
 
       if (letrasChutadas.includes(letraUsuario)) {
-        console.log('Você já tentou essa letra! Tente novamente. \n')
-      
+        console.log('Você já tentou essa letra! Tente novamente. \n') 
       } else {
-        letrasChutadas.push(letraUsuario)
         letraExiste = false;
+        letrasChutadas.push(letraUsuario);
+        this.verificarLetra(letraUsuario);
         
-        if (vidasRestantes >= 0) {
-          this.verificarLetra(letraUsuario)
-          
-          if (!letraExiste) {
-            vidasRestantes--;
-            console.log("A letra chutada não existe na palavra secreta. \n")
-          } else {
-            console.log("A letra existe na palavra secreta! \n");
-
-            if (JSON.stringify(palavraUsuario) == JSON.stringify(palavraEsperada))
+        if (!letraExiste)
+          vidasRestantes--;
+        
+        if (vidasRestantes > 0) {
+          if (JSON.stringify(palavraUsuario) == JSON.stringify(palavraEsperada))
               estadoJogo = 'ganhou';
-            }
-
         } else {
           estadoJogo = "perdeu";
         }       
@@ -46,7 +40,6 @@ class Forca {
     } else {
       console.log("Escreva uma letra válida! Tente novamente. \n");
     }
-
   }
 
   verificarLetra(letraUsuario) {
