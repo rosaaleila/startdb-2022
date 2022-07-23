@@ -6,51 +6,54 @@ let vidasRestantes = 6;
 let palavraUsuario = [];
 let palavraEsperada = [];
 let letraExiste = '';
-let validarChuteRegExp = /([a-z])/;
+let validarTentativaRegExp = /([a-z])/;
 
 class Forca {
-  
+
   constructor(palavraSecreta) {
     palavraEsperada = palavraSecreta.split("");
     palavraUsuario = palavraEsperada.map(() => { return "_" });
   }
-  
+
   chutar(letraUsuario) {
 
-    if (validarChuteRegExp.test(letraUsuario) && letraUsuario.length <= 1) {
+    if (validarTentativaRegExp.test(letraUsuario) && letraUsuario.length <= 1) {
 
       if (letrasChutadas.includes(letraUsuario)) {
-        console.log('Você já tentou essa letra! Tente novamente. \n') 
+        console.log('Você já tentou essa letra! Tente novamente. \n')
+
       } else {
         letraExiste = false;
         letrasChutadas.push(letraUsuario);
         this.verificarLetra(letraUsuario);
-        
-        if (!letraExiste)
+
+        if (!letraExiste) {
           vidasRestantes--;
-        
+          console.log("A letra chutada não existe na palavra secreta. \n");
+        }
+
         if (vidasRestantes > 0) {
           if (JSON.stringify(palavraUsuario) == JSON.stringify(palavraEsperada))
-              estadoJogo = 'ganhou';
+            estadoJogo = 'ganhou';
         } else {
           estadoJogo = "perdeu";
-        }       
+        }
       }
-      
+
     } else {
       console.log("Escreva uma letra válida! Tente novamente. \n");
     }
   }
 
   verificarLetra(letraUsuario) {
-     palavraEsperada.map((letraPalavra, index) => {
-      
+    palavraEsperada.map((letraPalavra, index) => {
+
       if (letraPalavra == letraUsuario) {
         palavraUsuario[index] = letraUsuario;
         letraExiste = true;
       }
 
-     });
+    });
   }
 
   buscarEstado() { return estadoJogo; }
